@@ -76,17 +76,6 @@ class GameSelector:
         tk.Label(self.character_frame, text="请选择角色",font=self.title_font).grid(row=0, column=2, columnspan=2, padx=150,pady=5)
         # 调整图像大小
         character_size = (150, 150)  # 设置角色图像的大小
-        '''self.character_images = [
-            ImageTk.PhotoImage(Image.open("resources/player_image/小诺.png").resize(character_size, Image.Resampling.LANCZOS)),
-            ImageTk.PhotoImage(Image.open("resources/player_image/诺雅.png").resize(character_size, Image.Resampling.LANCZOS)),
-            ImageTk.PhotoImage(Image.open("resources/player_image/皮卡丘.png").resize(character_size, Image.Resampling.LANCZOS)),
-            ImageTk.PhotoImage(Image.open("resources/player_image/空桑少主.png").resize(character_size, Image.Resampling.LANCZOS)),
-            ImageTk.PhotoImage(Image.open("resources/player_image/华妃.png").resize(character_size, Image.Resampling.LANCZOS)),
-            ImageTk.PhotoImage(Image.open("resources/player_image/哪吒.png").resize(character_size, Image.Resampling.LANCZOS)),
-        ]
-        self.character_names=["小诺","诺雅","皮卡丘","空桑少主","华妃","哪吒"]
-        self.character_paths=["resources/player_image/小诺.png","resources/player_image/诺雅.png","resources/player_image/皮卡丘.png",
-                              "resources/player_image/空桑少主.png","resources/player_image/华妃.png","resources/player_image/哪吒.png"]'''
         # 角色图片所在路径
         char_dir = "resources/player_image/"
 
