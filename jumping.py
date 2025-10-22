@@ -49,7 +49,6 @@ class Jumping:
         pygame.display.set_caption("跳跳跳")
         self.frame_rate=50
         # 创建恐龙对象
-
         self.player = Dinasour(self.player_path, x=0, y=self.screen_height - self.player_size_y,
                               screen_width=self.screen_width, screen_height=self.screen_height,
                                size_x=self.player_size_x, size_y=self.player_size_y,bg_rgb=self.bg_rgb)
@@ -400,7 +399,6 @@ class Jumping:
                 #print("重新开始游戏")
                 self.restart_game()
             elif event.ui_element == self.quit_button:
-                print("退出游戏")
                 self.player.continuable = False
 
     def restart_game(self):

@@ -14,8 +14,6 @@ class Dinasour:
         self.img_path = img_path
         self.size_x = size_x
         self.size_y = size_y
-        print(self.size_x)
-        print(self.size_y)
         self.get_name(img_path)
         self.normal_img=pygame.image.load(self.img_path).convert()
         self.bg_rgb=bg_rgb
@@ -100,8 +98,6 @@ class Dinasour:
             self.img=self.flying_img
 
     def lose_fly(self):
-        print(self.is_flying)
-        print(self.protection_after_fly)
         if not self.is_flying and not self.protection_after_fly:
             return
         cur_time=pygame.time.get_ticks()
@@ -113,7 +109,7 @@ class Dinasour:
 
     def get_name(self,path):
         self.name=path.split("/")[-1].split(".")[0]
-        print(self.name)
+
 
     def add_score(self,incresion=1):
         self.score+=incresion
@@ -227,18 +223,15 @@ class Dinasour:
                 self.land()
             self.lose_fly()
         else:
-            print("下降")
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.continuable = False
                     pygame.quit()
             if keys[pygame.K_a] and self.movable:
-                    print("下降途中前移")
                     self.move_backward = True
                     self.move_forward = False
                     self.backward()
             elif keys[pygame.K_d] and self.movable:
-                    print("下降途中后移")
                     self.move_forward = True
                     self.move_backward = False
                     self.forward()

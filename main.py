@@ -47,17 +47,21 @@ class GameSelector:
 
         # 调整图像大小
         background_size = (150, 120)  # 设置背景图像的大小
+        # 背景图片所在路径
+        bg_dir = "resources/background_image"
+
+        # 读取路径下所有 .jpg 文件（按文件名排序，确保顺序一致）
         self.background_images = [
-            ImageTk.PhotoImage(Image.open("resources/background_image/末世集群.jpg").resize(background_size, Image.Resampling.LANCZOS)),  # 使用PIL加载并调整图像
-            ImageTk.PhotoImage(Image.open("resources/background_image/千里江山.jpg").resize(background_size, Image.Resampling.LANCZOS)),
-            ImageTk.PhotoImage(Image.open("resources/background_image/暗夜灯火.jpg").resize(background_size, Image.Resampling.LANCZOS)),
-            ImageTk.PhotoImage(Image.open("resources/background_image/星河璀璨.jpg").resize(background_size, Image.Resampling.LANCZOS)),
-            ImageTk.PhotoImage(Image.open("resources/background_image/长安一梦.jpg").resize(background_size, Image.Resampling.LANCZOS)),
+            ImageTk.PhotoImage(
+                Image.open(os.path.join(bg_dir, filename)).resize(background_size, Image.Resampling.LANCZOS)
+            )
+            for filename in sorted(os.listdir(bg_dir))  # sorted 确保每次加载顺序一致
+            if filename.lower().endswith(".jpg")  # 只处理 jpg 格式图片
         ]
-        self.background_names=["末世集群","千里江山","暗夜灯火","星河璀璨","长安一梦"]
+        jpg_files = [f for f in sorted(os.listdir(bg_dir)) if f.lower().endswith(".jpg")]
+        self.background_names = [os.path.splitext(f)[0] for f in jpg_files]
         background_dir = "resources/background_image/"
         self.background_paths = [os.path.join(background_dir, f"{name}.jpg") for name in self.background_names]
-        print(self.background_paths)
         self.background_buttons = []
         for i, img in enumerate(self.background_images):
             button = tk.Button(self.background_frame, image=img, command=lambda i=i: self.select_background(i),
@@ -72,7 +76,7 @@ class GameSelector:
         tk.Label(self.character_frame, text="请选择角色",font=self.title_font).grid(row=0, column=2, columnspan=2, padx=150,pady=5)
         # 调整图像大小
         character_size = (150, 150)  # 设置角色图像的大小
-        self.character_images = [
+        '''self.character_images = [
             ImageTk.PhotoImage(Image.open("resources/player_image/小诺.png").resize(character_size, Image.Resampling.LANCZOS)),
             ImageTk.PhotoImage(Image.open("resources/player_image/诺雅.png").resize(character_size, Image.Resampling.LANCZOS)),
             ImageTk.PhotoImage(Image.open("resources/player_image/皮卡丘.png").resize(character_size, Image.Resampling.LANCZOS)),
@@ -82,7 +86,28 @@ class GameSelector:
         ]
         self.character_names=["小诺","诺雅","皮卡丘","空桑少主","华妃","哪吒"]
         self.character_paths=["resources/player_image/小诺.png","resources/player_image/诺雅.png","resources/player_image/皮卡丘.png",
-                              "resources/player_image/空桑少主.png","resources/player_image/华妃.png","resources/player_image/哪吒.png"]
+                              "resources/player_image/空桑少主.png","resources/player_image/华妃.png","resources/player_image/哪吒.png"]'''
+        # 角色图片所在路径
+        char_dir = "resources/player_image/"
+
+        # 筛选出所有图片文件（支持png等格式，按文件名排序）
+        # 这里假设图片格式为png，如需支持其他格式可扩展元组
+        char_files = [
+            f for f in sorted(os.listdir(char_dir))
+            if f.lower().endswith((".png", ".jpg", ".jpeg", ".bmp")) and not f.startswith("护盾") and not f.startswith("飞行")
+        ]
+
+        # 生成图片对象列表
+        self.character_images = [
+            ImageTk.PhotoImage(
+                Image.open(os.path.join(char_dir, f)).resize(character_size, Image.Resampling.LANCZOS)
+            ) for f in char_files
+        ]
+
+        # 生成名称列表（去除扩展名）
+        self.character_names = [os.path.splitext(f)[0] for f in char_files if not f.startswith("护盾") and not f.startswith("飞行")]
+        # 生成完整路径列表
+        self.character_paths = [os.path.join(char_dir, f) for f in char_files]
         self.character_sizes=[(96,120),(96,120),(96,120),(110,145),(112,153),(105,130)]
         self.character_map={self.character_names[i]:self.character_sizes[i] for i in range(len(self.character_names))}
         self.character_buttons = []
@@ -127,7 +152,6 @@ class GameSelector:
         if self.selected_background is not None:
             self.background_buttons[self.selected_background].config(highlightthickness=0)
         self.selected_background = index
-        print(index)
         self.selected_background_path= self.background_paths[index]
         self.background_buttons[index].config(highlightbackground="yellow", highlightcolor="blue",
                                               highlightthickness=25)
@@ -151,13 +175,9 @@ class GameSelector:
         if self.selected_background is None or self.selected_character is None:
             messagebox.showerror("错误", "请先选择背景和角色。")
         else:
-            print(self.selected_background_path)
-            print(self.selected_character_path)
             bg_rgb=(255,255,255)
             if "空桑" in self.selected_character_path:
                 bg_rgb=(184,68,193)
-            print(self.character_map[self.character_name][0])
-            print(self.character_name)
             game=Jumping(bg_path=self.selected_background_path,player_path=self.selected_character_path,
                          fence_path=self.fence_path,needle_path=self.needle_path,clock_path=self.clock_path,shield_path=self.shield_path,
                          wing_path=self.wing_path,arrow_path=self.arrow_path,bg_rgb=bg_rgb,
