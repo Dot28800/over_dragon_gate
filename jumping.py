@@ -5,8 +5,6 @@ import random
 
 import pygame_gui
 from arrow import MyArrow
-from pygame import font
-import horse
 
 from dinasour import Dinasour
 from fence import Fence

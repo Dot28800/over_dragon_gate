@@ -1,11 +1,7 @@
-import glob
 import os
-import sys
 import tkinter as tk
 from tkinter import messagebox, PhotoImage, ttk
-import pygame
 from PIL import Image, ImageTk
-from fence import Fence
 from jumping import Jumping
 
 class GameSelector:
